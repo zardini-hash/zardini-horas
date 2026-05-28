@@ -1,1 +1,285 @@
-# zardini-horas
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Control de Horas · Zardini 2026</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#0d1117;color:#e6edf3;padding:12px;min-height:100vh}
+.wrap{max-width:480px;margin:0 auto}
+.hdr{background:#161b22;padding:16px;border-radius:12px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(255,255,255,0.08)}
+.logo{width:38px;height:38px;background:#e84545;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;color:#fff;flex-shrink:0}
+.ht{color:#fff;font-size:16px;font-weight:600;margin-left:10px}
+.hs{color:#8b949e;font-size:11px}
+.online{background:rgba(63,185,80,.15);color:#3fb950;border:1px solid rgba(63,185,80,.3);padding:3px 10px;border-radius:20px;font-size:11px}
+.nav{display:flex;gap:3px;background:#161b22;padding:4px;border-radius:10px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.08)}
+.nb{flex:1;padding:8px;border:none;background:transparent;border-radius:8px;cursor:pointer;font-size:12px;color:#8b949e;font-family:inherit}
+.nb.on{background:#21262d;color:#e6edf3;border:1px solid rgba(255,255,255,.12);font-weight:500}
+.sec{display:none}.sec.on{display:block}
+.card{background:#161b22;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;margin-bottom:10px}
+.dvd{font-size:10px;font-weight:500;color:#8b949e;text-transform:uppercase;letter-spacing:.06em;padding:6px 0 5px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:8px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px}
+.row1{margin-bottom:8px}
+.lbl{font-size:10px;font-weight:500;color:#8b949e;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px}
+.inp{padding:8px 10px;border-radius:7px;border:1px solid rgba(255,255,255,.12);background:#21262d;color:#e6edf3;font-size:13px;font-family:inherit;outline:none;width:100%}
+.inp:focus{border-color:#e84545}
+.inp:disabled{opacity:.5}
+.hbox{background:rgba(232,69,69,.07);border:1px solid rgba(232,69,69,.2);border-radius:8px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;margin:8px 0}
+.hval{font-size:24px;font-weight:700;color:#e84545;font-family:monospace}
+.sbox{background:rgba(63,185,80,.07);border:1px solid rgba(63,185,80,.2);border-radius:8px;padding:12px 14px;margin:8px 0;display:none}
+.sbox.on{display:block}
+.srow{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px}
+.srow:last-child{border:none}
+.slbl{color:#8b949e}.sval{font-family:monospace;font-weight:500}
+.stot{display:flex;justify-content:space-between;margin-top:8px;padding-top:8px;border-top:1px solid rgba(63,185,80,.25)}
+.stlbl{font-size:13px;font-weight:600}
+.stval{font-size:22px;font-weight:700;color:#3fb950;font-family:monospace}
+.ivanote{font-size:10px;color:#8b949e;text-align:right;margin-top:2px}
+.mbox{background:rgba(88,166,255,.07);border:1px solid rgba(88,166,255,.2);border-radius:8px;padding:10px 14px;margin:8px 0;display:none;align-items:center;justify-content:space-between}
+.mbox.on{display:flex}
+.btn{width:100%;padding:11px;background:#e84545;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;margin-top:6px;font-family:inherit}
+.btn:hover{background:#cc3535}
+.btn:disabled{background:#8b949e;cursor:not-allowed}
+.ok{background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.3);border-radius:8px;padding:10px;color:#7ee787;font-size:13px;margin-top:8px;display:none}
+.ok.on{display:block}
+.err{background:rgba(232,69,69,.08);border:1px solid rgba(232,69,69,.2);border-radius:8px;padding:10px;color:#ff8080;font-size:13px;margin-top:8px;display:none}
+.err.on{display:block}
+.lkwrap{text-align:center;padding:8px 0 14px}
+.lkico{width:52px;height:52px;background:rgba(232,69,69,.12);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px}
+.lktit{font-size:16px;font-weight:600;margin-bottom:3px}
+.lksub{font-size:12px;color:#8b949e;line-height:1.4}
+.wbar{background:#21262d;border-radius:8px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.av{width:34px;height:34px;border-radius:50%;background:rgba(232,69,69,.15);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#e84545;flex-shrink:0}
+.wn{font-size:13px;font-weight:500}
+.wc{font-size:10px;color:#8b949e;font-family:monospace}
+.outbtn{padding:5px 10px;border:1px solid rgba(255,255,255,.12);background:transparent;border-radius:7px;font-size:11px;color:#8b949e;cursor:pointer;font-family:inherit}
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px}
+.st{background:#21262d;border-radius:7px;padding:10px 12px}
+.sl{font-size:9px;color:#8b949e;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+.sv{font-size:18px;font-weight:700;font-family:monospace}
+.sv.g{color:#3fb950}.sv.r{color:#e84545}.sv.a{color:#d29922}
+.frow{display:flex;gap:8px;margin-bottom:10px}
+.tw{border:1px solid rgba(255,255,255,.08);border-radius:9px;overflow:hidden;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px;min-width:420px}
+thead th{padding:8px 10px;text-align:left;background:#21262d;color:#8b949e;font-size:10px;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid rgba(255,255,255,.06)}
+tbody td{padding:9px 10px;border-bottom:1px solid rgba(255,255,255,.06);color:#e6edf3}
+tbody tr:last-child td{border:none}
+tbody tr:hover{background:#21262d}
+.pill{display:inline-flex;align-items:center;padding:2px 6px;border-radius:8px;font-size:10px;font-weight:500}
+.pg{background:rgba(63,185,80,.12);color:#7ee787}
+.pa{background:rgba(210,153,34,.12);color:#e3b341}
+.pr{background:rgba(232,69,69,.12);color:#ff8080}
+.pb{background:rgba(88,166,255,.12);color:#58a6ff}
+.info{background:rgba(88,166,255,.08);border:1px solid rgba(88,166,255,.2);border-radius:7px;padding:9px 12px;font-size:12px;color:#58a6ff;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="hdr">
+  <div style="display:flex;align-items:center">
+    <div class="logo">Z</div>
+    <div style="margin-left:10px"><div class="ht">Control de Horas</div><div class="hs">Zardini 2026</div></div>
+  </div>
+  <div class="online">● En línea</div>
+</div>
+
+<div class="nav">
+  <button class="nb on" onclick="goT('form',this)">📋 Registrar</button>
+  <button class="nb" onclick="goT('mis',this)">🔒 Mis horas</button>
+</div>
+
+<div id="tab-form" class="sec on">
+<div class="card">
+  <div class="dvd">👤 Identificación</div>
+  <div class="row2">
+    <div><label class="lbl">Código</label><select class="inp" id="fc" onchange="fillW()"><option value="">— Seleccionar —</option></select></div>
+    <div><label class="lbl">Nombre</label><input class="inp" id="fn" readonly disabled></div>
+  </div>
+  <div class="row2">
+    <div><label class="lbl">Tipo trabajador</label><input class="inp" id="ftipo" readonly disabled style="font-weight:600"></div>
+    <div><label class="lbl">Furgoneta</label>
+      <select class="inp" id="ffurgo" onchange="calcS()">
+        <option value="">— Tipo —</option>
+        <option value="zardini">Furgo Zardini</option>
+        <option value="propia">Furgo Propia</option>
+      </select>
+    </div>
+  </div>
+  <div class="dvd" style="margin-top:4px">📍 Servicio</div>
+  <div class="row2">
+    <div><label class="lbl">Cliente</label>
+      <select class="inp" id="fcliente" onchange="onCliente()">
+        <option value="">— Cliente —</option>
+        <option>Refruiting</option><option>Nora</option><option>Meteor</option>
+        <option>Almacen</option><option>Domestic shop</option><option>Shargo</option>
+        <option>Marta</option><option>Delicat</option><option>Baluar</option>
+      </select>
+    </div>
+    <div><label class="lbl">Tipo servicio</label>
+      <select class="inp" id="fserv" onchange="calcS()">
+        <option value="normal">Normal</option>
+        <option value="montaje_comun">Montaje común</option>
+        <option value="montaje_festivo">Montaje domingo/festivo</option>
+      </select>
+    </div>
+  </div>
+  <div class="row2">
+    <div><label class="lbl">Ruta</label><input class="inp" id="fruta" placeholder="Ej: RF13"></div>
+    <div><label class="lbl">Matrícula</label><input class="inp" id="fveh" placeholder="Ej: 8530 KPS"></div>
+  </div>
+  <div class="row2">
+    <div><label class="lbl">Fecha</label><input type="date" class="inp" id="ffecha"></div>
+    <div><label class="lbl">Paquetes</label><input type="number" class="inp" id="fpaq" min="0" placeholder="0"></div>
+  </div>
+  <div class="mbox" id="mbox">
+    <div><div style="font-size:13px;font-weight:500;color:#58a6ff">🌟 Meteor — Jornada diaria</div><div style="font-size:11px;color:#8b949e;margin-top:2px">Tarifa fija por jornada</div></div>
+    <div style="font-size:22px;font-weight:700;color:#58a6ff;font-family:monospace">120,00 €</div>
+  </div>
+  <div id="hsec">
+    <div class="dvd" style="margin-top:4px">🕐 Horario</div>
+    <div class="row3">
+      <div><label class="lbl">Inicio</label><input type="time" class="inp" id="finicio" oninput="onH()"></div>
+      <div><label class="lbl">Fin</label><input type="time" class="inp" id="ffin" oninput="onH()"></div>
+      <div><label class="lbl">H. extras</label><input type="number" class="inp" id="fext" min="0" placeholder="0" oninput="calcS()"></div>
+    </div>
+    <div class="hbox">
+      <span style="font-size:12px;color:#8b949e">⏱ Total horas</span>
+      <span class="hval" id="htot">—</span>
+    </div>
+  </div>
+  <div class="sbox" id="sbox">
+    <div style="font-size:10px;font-weight:500;color:#8b949e;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">💰 Cobro estimado</div>
+    <div id="sdet"></div>
+    <div class="stot">
+      <span class="stlbl">Total a cobrar</span>
+      <span class="stval" id="stot">—</span>
+    </div>
+    <div class="ivanote" id="ivanote"></div>
+  </div>
+  <div class="dvd" style="margin-top:4px">⚠️ Incidencias</div>
+  <div class="row2">
+    <div><label class="lbl">Descripción</label><input class="inp" id="finc" placeholder="Describe..."></div>
+    <div><label class="lbl">Hora inc.</label><input type="time" class="inp" id="fhinc"></div>
+  </div>
+  <div class="row2">
+    <div><label class="lbl">Info adicional / RIZ</label><input class="inp" id="fadd" placeholder="Ej: RIZ 2..."></div>
+    <div><label class="lbl">Servicios adicionales</label>
+      <select class="inp" id="fadicionales"><option value="No">No</option><option value="Si">Sí</option></select>
+    </div>
+  </div>
+  <button class="btn" id="btnreg" onclick="registrar()">📤 Registrar jornada</button>
+  <div class="ok" id="okmsg">✅ ¡Jornada registrada correctamente!</div>
+  <div class="err" id="errmsg">❌ Error al registrar. Inténtalo de nuevo.</div>
+</div>
+</div>
+
+<div id="tab-mis" class="sec">
+  <div id="lpanel" class="card">
+    <div class="lkwrap">
+      <div class="lkico">🔐</div>
+      <div class="lktit">Acceso privado</div>
+      <div class="lksub">Introduce tu código y PIN para ver solo tus horas y cobros.</div>
+    </div>
+    <div class="row1"><label class="lbl">Tu código personal</label>
+      <select class="inp" id="lc"><option value="">— Selecciona tu código —</option></select>
+    </div>
+    <div class="row1" style="margin-top:8px"><label class="lbl">Tu PIN (4 dígitos)</label>
+      <input type="password" class="inp" id="lp" placeholder="••••" maxlength="4" inputmode="numeric" style="letter-spacing:.3em;font-size:18px;text-align:center">
+    </div>
+    <button class="btn" id="btnlogin" onclick="doLogin()">🔓 Ver mis horas</button>
+    <div class="err" id="lerr" style="margin-top:8px">❌ <span id="lerrtxt">PIN incorrecto.</span></div>
+    <div class="info" style="margin-top:8px">🛡️ Solo verás tus propios registros. Tu PIN es personal.</div>
+  </div>
+  <div id="dpanel" style="display:none">
+    <div class="wbar">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="av" id="dav">??</div>
+        <div><div class="wn" id="dn">—</div><div class="wc" id="dc">—</div></div>
+      </div>
+      <button class="outbtn" onclick="logout()">Salir</button>
+    </div>
+    <div class="sg">
+      <div class="st"><div class="sl">Total horas</div><div class="sv g" id="st1">—</div></div>
+      <div class="st"><div class="sl">Jornadas</div><div class="sv" id="st2">—</div></div>
+      <div class="st"><div class="sl">Cobro aprox.</div><div class="sv a" id="st3">—</div></div>
+      <div class="st"><div class="sl">Incidencias</div><div class="sv r" id="st4">—</div></div>
+    </div>
+    <div class="frow">
+      <select class="inp" id="fmes" onchange="filtrar()" style="flex:1">
+        <option value="">Todos los meses</option>
+        <option value="1">Enero</option><option value="2">Febrero</option><option value="3">Marzo</option>
+        <option value="4">Abril</option><option value="5">Mayo</option><option value="6">Junio</option>
+        <option value="7">Julio</option><option value="8">Agosto</option><option value="9">Septiembre</option>
+        <option value="10">Octubre</option><option value="11">Noviembre</option><option value="12">Diciembre</option>
+      </select>
+      <select class="inp" id="fcli" onchange="filtrar()" style="flex:1">
+        <option value="">Todos los clientes</option>
+        <option>Refruiting</option><option>Nora</option><option>Meteor</option><option>Almacen</option>
+        <option>Domestic shop</option><option>Shargo</option><option>Marta</option><option>Delicat</option><option>Baluar</option>
+      </select>
+    </div>
+    <div class="tw">
+      <table><thead><tr><th>Fecha</th><th>Cliente</th><th>Horas</th><th>Furgo</th><th>Cobro</th><th>Estado</th></tr></thead>
+      <tbody id="tbody"></tbody></table>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+const URL_S="https://script.google.com/macros/s/AKfycbxrWnoL4Z9w93OXZ2se4IyVD_n8NJJ8Jm1Ekm0qABKqvIpZ5jSFUFAOnXXTb_QxLPr_/exec";
+const AUT=["T001 GG","T002 RAG","T004 ESJ","T007 FPC","T008 GMC","T011 JGP","T015 JGMP","T026 MHM","T030 KJ","T033 RB","T035 WR","T036 JBP","T043 TOG","T044 AJ","T045 JV","T050","T056"];
+const WK=[
+  {c:"T001 GG",n:"Gonzalo Gonzales"},{c:"T002 RAG",n:"Ricardo Andres Gutierrez"},
+  {c:"T003 DGM",n:"David Garcia Molina"},{c:"T004 ESJ",n:"Edwin Serrano Jimenez"},
+  {c:"T005 MAOP",n:"Miguel Angel Olivero Perez"},{c:"T006 DA",n:"Dauri Arias"},
+  {c:"T007 FPC",n:"Fabio Ponce de Carvalho"},{c:"T008 GMC",n:"Gilson Mota Camargo"},
+  {c:"T009 JD",n:"Jesús Dias"},{c:"T010 JJPG",n:"Jhon Jairo Gil Pardo"},
+  {c:"T011 JGP",n:"Joan Grau Piquer"},{c:"T012 JARL",n:"John Albeiro Rodriguez Leon"},
+  {c:"T013 JAVS",n:"Jorge Andres Vasquez Sanchez"},{c:"T014 JFDB",n:"Juan Federico Duque Blanco"},
+  {c:"T015 JGMP",n:"Juan Gerardo Mazzarri Pérez"},{c:"T016 LCS",n:"Leandro Correa e Silva"},
+  {c:"T017 MVD",n:"Mario Vinicius Dugolni Izidoro"},{c:"T018 SO",n:"Sebastian Ocampo Ocampo"},
+  {c:"T019 RR",n:"Ricardo Rincon"},{c:"T020 EA",n:"Emanuel Alvez"},
+  {c:"T021 RV",n:"Richard (vic)"},{c:"T022 FUT",n:"Frander Ulises Terreno"},
+  {c:"T023 AM",n:"Angel Marquez"},{c:"T024 CT",n:"Carolina Tobar"},
+  {c:"T025 RB",n:"Ruben"},{c:"T026 MHM",n:"Mohame"},
+  {c:"T027 JM",n:"Jhon Mendieta"},{c:"T028 RR",n:"Ricardo Ruiz"},
+  {c:"T029 JF",n:"Juliana Fernandez"},{c:"T030 KJ",n:"Kelly Johana"},
+  {c:"T031 LC",n:"Leandro Costa"},{c:"T032 MI",n:"Milton"},
+  {c:"T033 RB",n:"Ricardo Bento"},{c:"T034 RN",n:"Rony Nishijima"},
+  {c:"T035 WR",n:"Wilfredo Rafael"},{c:"T036 JBP",n:"Jaime Bladimir Pineda"},
+  {c:"T037 SA",n:"Sergio Andres"},{c:"T038 FPP",n:"Francisco Palma Palma"},
+  {c:"T039 JZ",n:"Jose Salazar"},{c:"T040 DM",n:"Diego Mario"},
+  {c:"T041",n:"Ronald"},{c:"T042 AH",n:"Alexander Hernandez"},
+  {c:"T043 TOG",n:"Tatiana Osorio Guzman"},{c:"T044 AJ",n:"Amir Jane"},
+  {c:"T045 JV",n:"Javier Loaiza"},{c:"T046 CO",n:"CAIQUE ONDA"},
+  {c:"T047",n:"Mario Sanchez"},{c:"T048",n:"Cristian Camilo Melo"},
+  {c:"T049",n:"Hernan Herrera"},{c:"T050",n:"Oswaldo"},
+  {c:"T051",n:"Sebastian Perez"},{c:"T052",n:"Wilson"},
+  {c:"T053",n:"Michael"},{c:"T054",n:"Jhon Prieto"},
+  {c:"T055",n:"Cristian Fernandez"},{c:"T056",n:"Antonio"},
+];
+function gp(c,n){let h=0,s=c+n+"ZRD26";for(let i=0;i<s.length;i++)h=((h<<5)-h+s.charCodeAt(i))|0;return String(Math.abs(h)%9000+1000);}
+WK.forEach(w=>{w.pin=gp(w.c,w.n);w.aut=AUT.includes(w.c);});
+[document.getElementById('fc'),document.getElementById('lc')].forEach(s=>{WK.forEach(w=>{const o=document.createElement('option');o.value=w.c;o.textContent=w.c+' — '+w.n+(w.aut?' (Aut.)':'');s.appendChild(o);});});
+document.getElementById('ffecha').value=new Date().toISOString().split('T')[0];
+function fillW(){const w=WK.find(x=>x.c===document.getElementById('fc').value);document.getElementById('fn').value=w?w.n:'';document.getElementById('ftipo').value=w?(w.aut?'✓ Autónomo':'No autónomo'):'';if(document.getElementById('fcliente').value==='Baluar'){document.getElementById('ffurgo').value='zardini';}calcS();}
+function onCliente(){const cl=document.getElementById('fcliente').value;const mb=document.getElementById('mbox'),hs=document.getElementById('hsec'),ff=document.getElementById('ffurgo');if(cl==='Meteor'){mb.classList.add('on');hs.style.display='none';}else{mb.classList.remove('on');hs.style.display='block';}if(cl==='Baluar'){ff.value='zardini';ff.disabled=true;}else{ff.disabled=false;}if(cl!=='Refruiting')document.getElementById('fserv').value='normal';calcS();}
+function getH(){const a=document.getElementById('finicio').value,b=document.getElementById('ffin').value;if(!a||!b)return 0;const[ah,am]=a.split(':').map(Number),[bh,bm]=b.split(':').map(Number);const m=(bh*60+bm)-(ah*60+am);return m>0?m/60:0;}
+function onH(){const h=getH();const hh=Math.floor(h),mm=Math.round((h-hh)*60);document.getElementById('htot').textContent=h>0?hh+'h'+(mm>0?' '+mm+'m':''):'—';calcS();}
+function calcS(){const code=document.getElementById('fc').value,cl=document.getElementById('fcliente').value,furgo=document.getElementById('ffurgo').value,serv=document.getElementById('fserv').value;const w=WK.find(x=>x.c===code),sb=document.getElementById('sbox');if(!code||!cl||!furgo||!w){sb.classList.remove('on');return;}let base=0,total=0,det='',iva=false,h=getH();if(cl==='Meteor'){total=120;det='<div class="srow"><span class="slbl">Jornada Meteor</span><span class="sval">120,00 €</span></div>';iva=w.aut;}else if(cl==='Baluar'){base=10;if(!h){sb.classList.remove('on');return;}total=h*base;det='<div class="srow"><span class="slbl">Baluar: '+h.toFixed(2)+'h × 10€</span><span class="sval">'+total.toFixed(2)+' €</span></div>';iva=w.aut;}else if(serv==='montaje_festivo'){if(!h){sb.classList.remove('on');return;}if(h<=8){total=60;det='<div class="srow"><span class="slbl">Montaje festivo (hasta 8h)</span><span class="sval">60,00 €</span></div>';}else{const ex=h-8;total=60+ex*10;det='<div class="srow"><span class="slbl">Primeras 8h</span><span class="sval">60,00 €</span></div><div class="srow"><span class="slbl">'+ex.toFixed(1)+'h extra × 10€</span><span class="sval">'+(ex*10).toFixed(2)+' €</span></div>';}iva=w.aut;}else{base=furgo==='propia'?(w.aut?12.50:12):(w.aut?9:8);if(!h){sb.classList.remove('on');return;}total=h*base;const tl=serv==='montaje_comun'?'Montaje común':'Jornada normal';det='<div class="srow"><span class="slbl">'+tl+': '+h.toFixed(2)+'h × '+base+'€</span><span class="sval">'+total.toFixed(2)+' €</span></div><div class="srow"><span class="slbl">Furgo '+(furgo==='propia'?'propia':'Zardini')+' · '+(w.aut?'Autónomo':'No autónomo')+'</span><span class="sval">'+base+' €/h</span></div>';iva=w.aut;}const tc=iva?total*1.21:total;sb.classList.add('on');document.getElementById('sdet').innerHTML=det;document.getElementById('stot').textContent=tc.toFixed(2)+' €';document.getElementById('ivanote').textContent=iva?'* Incluye IVA 21% ('+(total*0.21).toFixed(2)+' €). Base: '+total.toFixed(2)+' €':'';}
+function goT(id,btn){document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));document.getElementById('tab-'+id).classList.add('on');btn.classList.add('on');}
+function registrar(){const code=document.getElementById('fc').value,cl=document.getElementById('fcliente').value,fecha=document.getElementById('ffecha').value,furgo=document.getElementById('ffurgo').value;if(!code||!cl||!fecha||!furgo){alert('Completa: código, cliente, fecha y tipo de furgoneta.');return;}const meteor=cl==='Meteor',ini=document.getElementById('finicio').value,fin=document.getElementById('ffin').value;if(!meteor&&(!ini||!fin)){alert('Completa hora de inicio y fin.');return;}const btn=document.getElementById('btnreg');btn.disabled=true;btn.textContent='⏳ Enviando...';document.getElementById('okmsg').classList.remove('on');document.getElementById('errmsg').classList.remove('on');const w=WK.find(x=>x.c===code);const payload={codigo:code,email:'',cliente:cl,ruta:document.getElementById('fruta').value,vehiculo:document.getElementById('fveh').value,fecha,inicio:meteor?'—':ini,fin:meteor?'—':fin,totalHoras:meteor?'Jornada':document.getElementById('htot').textContent,totalDec:meteor?'jornada':getH().toFixed(2),incidencia:document.getElementById('finc').value,horaInc:document.getElementById('fhinc').value,adicional:document.getElementById('fadd').value,paquetes:document.getElementById('fpaq').value,serviciosAdicionales:document.getElementById('fadicionales').value,tipoFurgo:furgo,tipoServicio:document.getElementById('fserv').value,esAutonomo:w?(w.aut?'Si':'No'):'No',cobroEstimado:document.getElementById('stot').textContent};fetch(URL_S,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).then(()=>{btn.disabled=false;btn.textContent='📤 Registrar jornada';document.getElementById('okmsg').classList.add('on');setTimeout(()=>document.getElementById('okmsg').classList.remove('on'),5000);}).catch(()=>{btn.disabled=false;btn.textContent='📤 Registrar jornada';document.getElementById('errmsg').classList.add('on');});}
+let rows=[],curCode='';
+function doLogin(){const code=document.getElementById('lc').value,pin=document.getElementById('lp').value;const er=document.getElementById('lerr');er.classList.remove('on');if(!code||!pin){document.getElementById('lerrtxt').textContent='Selecciona tu código e introduce el PIN.';er.classList.add('on');return;}const w=WK.find(x=>x.c===code);if(!w||w.pin!==pin){document.getElementById('lerrtxt').textContent='PIN incorrecto.';er.classList.add('on');return;}const btn=document.getElementById('btnlogin');btn.disabled=true;btn.textContent='⏳ Cargando...';fetch(URL_S+'?code='+encodeURIComponent(code)+'&pin='+encodeURIComponent(pin)).then(r=>r.json()).then(d=>{btn.disabled=false;btn.textContent='🔓 Ver mis horas';if(d.error){document.getElementById('lerrtxt').textContent='Error del servidor.';er.classList.add('on');return;}rows=d.rows||[];curCode=code;loginOk(code);}).catch(()=>{btn.disabled=false;btn.textContent='🔓 Ver mis horas';document.getElementById('lerrtxt').textContent='No se pudo conectar.';er.classList.add('on');});}
+function loginOk(code){const w=WK.find(x=>x.c===code);const ini=w?w.n.split(' ').slice(0,2).map(n=>n[0]).join('').toUpperCase():code.slice(0,2);document.getElementById('dav').textContent=ini;document.getElementById('dn').textContent=w?w.n:code;document.getElementById('dc').textContent=code+' · '+(w&&w.aut?'Autónomo':'No autónomo');document.getElementById('lpanel').style.display='none';document.getElementById('dpanel').style.display='block';filtrar();}
+function logout(){rows=[];curCode='';document.getElementById('lpanel').style.display='block';document.getElementById('dpanel').style.display='none';document.getElementById('lp').value='';document.getElementById('lc').value='';}
+function filtrar(){const mes=document.getElementById('fmes').value,cl=document.getElementById('fcli').value;let r=rows;if(cl)r=r.filter(x=>x.cliente&&x.cliente.toLowerCase().includes(cl.toLowerCase()));if(mes)r=r.filter(x=>{if(!x.fecha)return false;const p=String(x.fecha).split('/');return p.length>=2&&String(parseInt(p[1]))===mes;});renderT(r);}
+function calcCobro(r,w){const h=parseFloat(String(r.horas||'0').replace(',','.'));if(!h||h<=0)return 0;if(r.cliente==='Meteor')return w&&w.aut?120*1.21:120;const furgo=String(r.vehiculo||'').toLowerCase().includes('propia')||String(r.ruta||'').toLowerCase().includes('propia')?'propia':'zardini';let base=r.cliente==='Baluar'?10:furgo==='propia'?(w&&w.aut?12.50:12):(w&&w.aut?9:8);return w&&w.aut?h*base*1.21:h*base;}
+function renderT(r){const w=WK.find(x=>x.c===curCode);const tot=r.reduce((a,x)=>a+parseFloat(String(x.horas||'0').replace(',','.')),0);const inc=r.filter(x=>x.incidencia&&String(x.incidencia).trim()).length;const cobro=r.reduce((a,x)=>a+calcCobro(x,w),0);document.getElementById('st1').textContent=isNaN(tot)?'—':tot.toFixed(1)+' h';document.getElementById('st2').textContent=r.length;document.getElementById('st3').textContent=cobro>0?cobro.toFixed(0)+' €':'—';document.getElementById('st4').textContent=inc;if(!r.length){document.getElementById('tbody').innerHTML='<tr><td colspan="6" style="text-align:center;padding:18px;color:#8b949e">Sin registros</td></tr>';return;}document.getElementById('tbody').innerHTML=r.map(x=>{const h=parseFloat(String(x.horas||'0').replace(',','.'));const badge=h>=10?'<span class="pill pr">Extra</span>':h>=8?'<span class="pill pa">Completa</span>':h>=6?'<span class="pill pg">Normal</span>':'<span class="pill pb">Parcial</span>';const fs=String(x.fecha||'—');const hs=String(x.horas||'—').replace(',','.');const furgo=String(x.vehiculo||'').toLowerCase().includes('propia')||String(x.ruta||'').toLowerCase().includes('propia')?'🚐P':'🚐Z';const cb=calcCobro(x,w);return '<tr><td>'+fs+'</td><td>'+(x.cliente||'—')+'</td><td style="font-family:monospace;font-weight:600">'+hs+' h</td><td>'+furgo+'</td><td style="font-family:monospace;color:#d29922">'+(cb>0?cb.toFixed(2)+' €':'—')+'</td><td>'+badge+'</td></tr>';}).join('');}
+document.getElementById('lp').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+</script>
+</body>
+</html>
