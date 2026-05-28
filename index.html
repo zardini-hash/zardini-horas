@@ -1,549 +1,281 @@
 <!DOCTYPE html>
-html lang=3D"es"><head><meta http-equiv=3D"Content-Type" co=
-ntent=3D"text/html; charset=3DUTF-8"><link rel=3D"stylesheet" type=3D"text/=
-css" href=3D"cid:css-7b950fc5-7c19-44a3-a55b-818f1f9247b3@mhtml.blink" />
-
-<meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=3D1.=
-0">
-<title>Control de Horas =C2=B7 Zardini 2026</title>
-
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Control de Horas · Zardini 2026</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#0d1117;color:#e6edf3;padding:12px;min-height:100vh}
+.wrap{max-width:480px;margin:0 auto}
+.hdr{background:#161b22;padding:16px;border-radius:12px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(255,255,255,0.08)}
+.logo{width:38px;height:38px;background:#e84545;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;color:#fff;flex-shrink:0}
+.ht{color:#fff;font-size:16px;font-weight:600;margin-left:10px}
+.hs{color:#8b949e;font-size:11px}
+.online{background:rgba(63,185,80,.15);color:#3fb950;border:1px solid rgba(63,185,80,.3);padding:3px 10px;border-radius:20px;font-size:11px}
+.nav{display:flex;gap:3px;background:#161b22;padding:4px;border-radius:10px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.08)}
+.nb{flex:1;padding:8px;border:none;background:transparent;border-radius:8px;cursor:pointer;font-size:12px;color:#8b949e;font-family:inherit}
+.nb.on{background:#21262d;color:#e6edf3;border:1px solid rgba(255,255,255,.12);font-weight:500}
+.sec{display:none}.sec.on{display:block}
+.card{background:#161b22;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;margin-bottom:10px}
+.dvd{font-size:10px;font-weight:500;color:#8b949e;text-transform:uppercase;letter-spacing:.06em;padding:6px 0 5px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:8px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px}
+.row1{margin-bottom:8px}
+.lbl{font-size:10px;font-weight:500;color:#8b949e;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px}
+.inp{padding:8px 10px;border-radius:7px;border:1px solid rgba(255,255,255,.12);background:#21262d;color:#e6edf3;font-size:13px;font-family:inherit;outline:none;width:100%}
+.inp:focus{border-color:#e84545}
+.inp:disabled{opacity:.5}
+.hbox{background:rgba(232,69,69,.07);border:1px solid rgba(232,69,69,.2);border-radius:8px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;margin:8px 0}
+.hval{font-size:24px;font-weight:700;color:#e84545;font-family:monospace}
+.sbox{background:rgba(63,185,80,.07);border:1px solid rgba(63,185,80,.2);border-radius:8px;padding:12px 14px;margin:8px 0;display:none}
+.sbox.on{display:block}
+.srow{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px}
+.srow:last-child{border:none}
+.slbl{color:#8b949e}.sval{font-family:monospace;font-weight:500}
+.stot{display:flex;justify-content:space-between;margin-top:8px;padding-top:8px;border-top:1px solid rgba(63,185,80,.25)}
+.stlbl{font-size:13px;font-weight:600}
+.stval{font-size:22px;font-weight:700;color:#3fb950;font-family:monospace}
+.ivanote{font-size:10px;color:#8b949e;text-align:right;margin-top:2px}
+.mbox{background:rgba(88,166,255,.07);border:1px solid rgba(88,166,255,.2);border-radius:8px;padding:10px 14px;margin:8px 0;display:none;align-items:center;justify-content:space-between}
+.mbox.on{display:flex}
+.btn{width:100%;padding:11px;background:#e84545;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;margin-top:6px;font-family:inherit}
+.btn:hover{background:#cc3535}
+.btn:disabled{background:#8b949e;cursor:not-allowed}
+.ok{background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.3);border-radius:8px;padding:10px;color:#7ee787;font-size:13px;margin-top:8px;display:none}
+.ok.on{display:block}
+.err{background:rgba(232,69,69,.08);border:1px solid rgba(232,69,69,.2);border-radius:8px;padding:10px;color:#ff8080;font-size:13px;margin-top:8px;display:none}
+.err.on{display:block}
+.lkwrap{text-align:center;padding:8px 0 14px}
+.lkico{width:52px;height:52px;background:rgba(232,69,69,.12);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px}
+.lktit{font-size:16px;font-weight:600;margin-bottom:3px}
+.lksub{font-size:12px;color:#8b949e;line-height:1.4}
+.wbar{background:#21262d;border-radius:8px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.av{width:34px;height:34px;border-radius:50%;background:rgba(232,69,69,.15);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#e84545;flex-shrink:0}
+.wn{font-size:13px;font-weight:500}
+.wc{font-size:10px;color:#8b949e;font-family:monospace}
+.outbtn{padding:5px 10px;border:1px solid rgba(255,255,255,.12);background:transparent;border-radius:7px;font-size:11px;color:#8b949e;cursor:pointer;font-family:inherit}
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px}
+.st{background:#21262d;border-radius:7px;padding:10px 12px}
+.sl{font-size:9px;color:#8b949e;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+.sv{font-size:18px;font-weight:700;font-family:monospace}
+.sv.g{color:#3fb950}.sv.r{color:#e84545}.sv.a{color:#d29922}
+.frow{display:flex;gap:8px;margin-bottom:10px}
+.tw{border:1px solid rgba(255,255,255,.08);border-radius:9px;overflow:hidden;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px;min-width:420px}
+thead th{padding:8px 10px;text-align:left;background:#21262d;color:#8b949e;font-size:10px;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid rgba(255,255,255,.06)}
+tbody td{padding:9px 10px;border-bottom:1px solid rgba(255,255,255,.06);color:#e6edf3}
+tbody tr:last-child td{border:none}
+tbody tr:hover{background:#21262d}
+.pill{display:inline-flex;align-items:center;padding:2px 6px;border-radius:8px;font-size:10px;font-weight:500}
+.pg{background:rgba(63,185,80,.12);color:#7ee787}
+.pa{background:rgba(210,153,34,.12);color:#e3b341}
+.pr{background:rgba(232,69,69,.12);color:#ff8080}
+.pb{background:rgba(88,166,255,.12);color:#58a6ff}
+.info{background:rgba(88,166,255,.08);border:1px solid rgba(88,166,255,.2);border-radius:7px;padding:9px 12px;font-size:12px;color:#58a6ff;margin-top:8px}
+</style>
 </head>
 <body>
-<div class=3D"wrap">
-<div class=3D"hdr">
-  <div style=3D"display:flex;align-items:center">
-    <div class=3D"logo">Z</div>
-    <div style=3D"margin-left:10px"><div class=3D"ht">Control de Horas</div=
-><div class=3D"hs">Zardini 2026</div></div>
+<div class="wrap">
+<div class="hdr">
+  <div style="display:flex;align-items:center">
+    <div class="logo">Z</div>
+    <div style="margin-left:10px"><div class="ht">Control de Horas</div><div class="hs">Zardini 2026</div></div>
   </div>
-  <div class=3D"online">=E2=97=8F En l=C3=ADnea</div>
+  <div class="online">● En línea</div>
 </div>
-
-<div class=3D"nav">
-  <button class=3D"nb on">=F0=9F=93=8B Registrar</button>
-  <button class=3D"nb">=F0=9F=94=92 Mis horas</button>
+<div class="nav">
+  <button class="nb on" onclick="goT('form',this)">📋 Registrar</button>
+  <button class="nb" onclick="goT('mis',this)">🔒 Mis horas</button>
 </div>
-
-<!-- REGISTRAR -->
-<div id=3D"tab-form" class=3D"sec on">
-<div class=3D"card">
-  <div class=3D"dvd">=F0=9F=91=A4 Identificaci=C3=B3n</div>
-  <div class=3D"row2">
-    <div><label class=3D"lbl">C=C3=B3digo</label><select class=3D"inp" id=
-=3D"fc"><option value=3D"">=E2=80=94 Seleccionar =E2=80=94</option><option =
-value=3D"T001 GG">T001 GG =E2=80=94 Gonzalo Gonzales (Aut.)</option><option=
- value=3D"T002 RAG">T002 RAG =E2=80=94 Ricardo Andres Gutierrez (Aut.)</opt=
-ion><option value=3D"T003 DGM">T003 DGM =E2=80=94 David Garcia Molina</opti=
-on><option value=3D"T004 ESJ">T004 ESJ =E2=80=94 Edwin Serrano Jimenez (Aut=
-.)</option><option value=3D"T005 MAOP">T005 MAOP =E2=80=94 Miguel Angel Oli=
-vero Perez</option><option value=3D"T006 DA">T006 DA =E2=80=94 Dauri Arias<=
-/option><option value=3D"T007 FPC">T007 FPC =E2=80=94 Fabio Ponce de Carval=
-ho (Aut.)</option><option value=3D"T008 GMC">T008 GMC =E2=80=94 Gilson Mota=
- Camargo (Aut.)</option><option value=3D"T009 JD">T009 JD =E2=80=94 Jes=C3=
-=BAs Dias</option><option value=3D"T010 JJPG">T010 JJPG =E2=80=94 Jhon Jair=
-o Gil Pardo</option><option value=3D"T011 JGP">T011 JGP =E2=80=94 Joan Grau=
- Piquer (Aut.)</option><option value=3D"T012 JARL">T012 JARL =E2=80=94 John=
- Albeiro Rodriguez Leon</option><option value=3D"T013 JAVS">T013 JAVS =E2=
-=80=94 Jorge Andres Vasquez Sanchez</option><option value=3D"T014 JFDB">T01=
-4 JFDB =E2=80=94 Juan Federico Duque Blanco</option><option value=3D"T015 J=
-GMP">T015 JGMP =E2=80=94 Juan Gerardo Mazzarri P=C3=A9rez (Aut.)</option><o=
-ption value=3D"T016 LCS">T016 LCS =E2=80=94 Leandro Correa e Silva</option>=
-<option value=3D"T017 MVD">T017 MVD =E2=80=94 Mario Vinicius Dugolni Izidor=
-o</option><option value=3D"T018 SO">T018 SO =E2=80=94 Sebastian Ocampo Ocam=
-po</option><option value=3D"T019 RR">T019 RR =E2=80=94 Ricardo Rincon</opti=
-on><option value=3D"T020 EA">T020 EA =E2=80=94 Emanuel Alvez</option><optio=
-n value=3D"T021 RV">T021 RV =E2=80=94 Richard (vic)</option><option value=
-=3D"T022 FUT">T022 FUT =E2=80=94 Frander Ulises Terreno</option><option val=
-ue=3D"T023 AM">T023 AM =E2=80=94 Angel Marquez</option><option value=3D"T02=
-4 CT">T024 CT =E2=80=94 Carolina Tobar</option><option value=3D"T025 RB">T0=
-25 RB =E2=80=94 Ruben</option><option value=3D"T026 MHM">T026 MHM =E2=80=94=
- Mohame (Aut.)</option><option value=3D"T027 JM">T027 JM =E2=80=94 Jhon Men=
-dieta</option><option value=3D"T028 RR">T028 RR =E2=80=94 Ricardo Ruiz</opt=
-ion><option value=3D"T029 JF">T029 JF =E2=80=94 Juliana Fernandez</option><=
-option value=3D"T030 KJ">T030 KJ =E2=80=94 Kelly Johana (Aut.)</option><opt=
-ion value=3D"T031 LC">T031 LC =E2=80=94 Leandro Costa</option><option value=
-=3D"T032 MI">T032 MI =E2=80=94 Milton</option><option value=3D"T033 RB">T03=
-3 RB =E2=80=94 Ricardo Bento (Aut.)</option><option value=3D"T034 RN">T034 =
-RN =E2=80=94 Rony Nishijima</option><option value=3D"T035 WR">T035 WR =E2=
-=80=94 Wilfredo Rafael (Aut.)</option><option value=3D"T036 JBP">T036 JBP =
-=E2=80=94 Jaime Bladimir Pineda (Aut.)</option><option value=3D"T037 SA">T0=
-37 SA =E2=80=94 Sergio Andres</option><option value=3D"T038 FPP">T038 FPP =
-=E2=80=94 Francisco Palma Palma</option><option value=3D"T039 JZ">T039 JZ =
-=E2=80=94 Jose Salazar</option><option value=3D"T040 DM">T040 DM =E2=80=94 =
-Diego Mario</option><option value=3D"T041">T041 =E2=80=94 Ronald</option><o=
-ption value=3D"T042 AH">T042 AH =E2=80=94 Alexander Hernandez</option><opti=
-on value=3D"T043 TOG">T043 TOG =E2=80=94 Tatiana Osorio Guzman (Aut.)</opti=
-on><option value=3D"T044 AJ">T044 AJ =E2=80=94 Amir Jane (Aut.)</option><op=
-tion value=3D"T045 JV">T045 JV =E2=80=94 Javier Loaiza (Aut.)</option><opti=
-on value=3D"T046 CO">T046 CO =E2=80=94 CAIQUE ONDA</option><option value=3D=
-"T047">T047 =E2=80=94 Mario Sanchez</option><option value=3D"T048">T048 =E2=
-=80=94 Cristian Camilo Melo</option><option value=3D"T049">T049 =E2=80=94 H=
-ernan Herrera</option><option value=3D"T050">T050 =E2=80=94 Oswaldo (Aut.)<=
-/option><option value=3D"T051">T051 =E2=80=94 Sebastian Perez</option><opti=
-on value=3D"T052">T052 =E2=80=94 Wilson</option><option value=3D"T053">T053=
- =E2=80=94 Michael</option><option value=3D"T054">T054 =E2=80=94 Jhon Priet=
-o</option><option value=3D"T055">T055 =E2=80=94 Cristian Fernandez</option>=
-<option value=3D"T056">T056 =E2=80=94 Antonio (Aut.)</option></select></div=
->
-    <div><label class=3D"lbl">Nombre</label><input class=3D"inp" id=3D"fn" =
-readonly=3D"" disabled=3D""></div>
+<div id="tab-form" class="sec on">
+<div class="card">
+  <div class="dvd">👤 Identificación</div>
+  <div class="row2">
+    <div><label class="lbl">Código</label><select class="inp" id="fc" onchange="fillW()"><option value="">— Seleccionar —</option></select></div>
+    <div><label class="lbl">Nombre</label><input class="inp" id="fn" readonly disabled></div>
   </div>
-  <div class=3D"row2">
-    <div><label class=3D"lbl">Tipo trabajador</label><input class=3D"inp" i=
-d=3D"ftipo" readonly=3D"" disabled=3D"" style=3D"font-weight:600"></div>
-    <div><label class=3D"lbl">Furgoneta</label>
-      <select class=3D"inp" id=3D"ffurgo">
-        <option value=3D"">=E2=80=94 Tipo =E2=80=94</option>
-        <option value=3D"zardini">Furgo Zardini</option>
-        <option value=3D"propia">Furgo Propia</option>
+  <div class="row2">
+    <div><label class="lbl">Tipo trabajador</label><input class="inp" id="ftipo" readonly disabled style="font-weight:600"></div>
+    <div><label class="lbl">Furgoneta</label>
+      <select class="inp" id="ffurgo" onchange="calcS()">
+        <option value="">— Tipo —</option>
+        <option value="zardini">Furgo Zardini</option>
+        <option value="propia">Furgo Propia</option>
       </select>
     </div>
   </div>
-
-  <div class=3D"dvd" style=3D"margin-top:4px">=F0=9F=93=8D Servicio</div>
-  <div class=3D"row2">
-    <div><label class=3D"lbl">Cliente</label>
-      <select class=3D"inp" id=3D"fcliente">
-        <option value=3D"">=E2=80=94 Cliente =E2=80=94</option>
-        <option>Refruiting</option><option>Nora</option><option>Meteor</opt=
-ion>
-        <option>Almacen</option><option>Domestic shop</option><option>Sharg=
-o</option>
-        <option>Marta</option><option>Delicat</option><option>Baluar</optio=
-n>
+  <div class="dvd" style="margin-top:4px">📍 Servicio</div>
+  <div class="row2">
+    <div><label class="lbl">Cliente</label>
+      <select class="inp" id="fcliente" onchange="onCliente()">
+        <option value="">— Cliente —</option>
+        <option>Refruiting</option><option>Nora</option><option>Meteor</option>
+        <option>Almacen</option><option>Domestic shop</option><option>Shargo</option>
+        <option>Marta</option><option>Delicat</option><option>Baluar</option>
       </select>
     </div>
-    <div><label class=3D"lbl">Tipo servicio</label>
-      <select class=3D"inp" id=3D"fserv">
-        <option value=3D"normal">Normal</option>
-        <option value=3D"montaje_comun">Montaje com=C3=BAn</option>
-        <option value=3D"montaje_festivo">Montaje domingo/festivo</option>
+    <div><label class="lbl">Tipo servicio</label>
+      <select class="inp" id="fserv" onchange="calcS()">
+        <option value="normal">Normal</option>
+        <option value="montaje_comun">Montaje común</option>
+        <option value="montaje_festivo">Montaje domingo/festivo</option>
       </select>
     </div>
   </div>
-  <div class=3D"row2">
-    <div><label class=3D"lbl">Ruta</label><input class=3D"inp" id=3D"fruta"=
- placeholder=3D"Ej: RF13"></div>
-    <div><label class=3D"lbl">Matr=C3=ADcula</label><input class=3D"inp" id=
-=3D"fveh" placeholder=3D"Ej: 8530 KPS"></div>
+  <div class="row2">
+    <div><label class="lbl">Ruta</label><input class="inp" id="fruta" placeholder="Ej: RF13"></div>
+    <div><label class="lbl">Matrícula</label><input class="inp" id="fveh" placeholder="Ej: 8530 KPS"></div>
   </div>
-  <div class=3D"row2">
-    <div><label class=3D"lbl">Fecha</label><input type=3D"date" class=3D"in=
-p" id=3D"ffecha"></div>
-    <div><label class=3D"lbl">Paquetes</label><input type=3D"number" class=
-=3D"inp" id=3D"fpaq" min=3D"0" placeholder=3D"0"></div>
+  <div class="row2">
+    <div><label class="lbl">Fecha</label><input type="date" class="inp" id="ffecha"></div>
+    <div><label class="lbl">Paquetes</label><input type="number" class="inp" id="fpaq" min="0" placeholder="0"></div>
   </div>
-
-  <!-- Meteor jornada -->
-  <div class=3D"mbox" id=3D"mbox">
-    <div><div style=3D"font-size:13px;font-weight:500;color:#58a6ff">=F0=9F=
-=8C=9F Meteor =E2=80=94 Jornada diaria</div><div style=3D"font-size:11px;co=
-lor:#8b949e;margin-top:2px">Tarifa fija por jornada</div></div>
-    <div style=3D"font-size:22px;font-weight:700;color:#58a6ff;font-family:=
-monospace">120,00 =E2=82=AC</div>
+  <div class="mbox" id="mbox">
+    <div><div style="font-size:13px;font-weight:500;color:#58a6ff">🌟 Meteor — Jornada diaria</div><div style="font-size:11px;color:#8b949e;margin-top:2px">Tarifa fija por jornada</div></div>
+    <div style="font-size:22px;font-weight:700;color:#58a6ff;font-family:monospace">120,00 €</div>
   </div>
-
-  <!-- Horas -->
-  <div id=3D"hsec">
-    <div class=3D"dvd" style=3D"margin-top:4px">=F0=9F=95=90 Horario</div>
-    <div class=3D"row3">
-      <div><label class=3D"lbl">Inicio</label><input type=3D"time" class=3D=
-"inp" id=3D"finicio"></div>
-      <div><label class=3D"lbl">Fin</label><input type=3D"time" class=3D"in=
-p" id=3D"ffin"></div>
-      <div><label class=3D"lbl">H. extras</label><input type=3D"number" cla=
-ss=3D"inp" id=3D"fext" min=3D"0" placeholder=3D"0"></div>
+  <div id="hsec">
+    <div class="dvd" style="margin-top:4px">🕐 Horario</div>
+    <div class="row3">
+      <div><label class="lbl">Inicio</label><input type="time" class="inp" id="finicio" oninput="onH()"></div>
+      <div><label class="lbl">Fin</label><input type="time" class="inp" id="ffin" oninput="onH()"></div>
+      <div><label class="lbl">H. extras</label><input type="number" class="inp" id="fext" min="0" placeholder="0" oninput="calcS()"></div>
     </div>
-    <div class=3D"hbox">
-      <span style=3D"font-size:12px;color:#8b949e">=E2=8F=B1 Total horas</s=
-pan>
-      <span class=3D"hval" id=3D"htot">=E2=80=94</span>
+    <div class="hbox">
+      <span style="font-size:12px;color:#8b949e">⏱ Total horas</span>
+      <span class="hval" id="htot">—</span>
     </div>
   </div>
-
-  <!-- Salario -->
-  <div class=3D"sbox" id=3D"sbox">
-    <div style=3D"font-size:10px;font-weight:500;color:#8b949e;text-transfo=
-rm:uppercase;letter-spacing:.06em;margin-bottom:8px">=F0=9F=92=B0 Cobro est=
-imado</div>
-    <div id=3D"sdet"></div>
-    <div class=3D"stot">
-      <span class=3D"stlbl">Total a cobrar</span>
-      <span class=3D"stval" id=3D"stot">=E2=80=94</span>
+  <div class="sbox" id="sbox">
+    <div style="font-size:10px;font-weight:500;color:#8b949e;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">💰 Cobro estimado</div>
+    <div id="sdet"></div>
+    <div class="stot">
+      <span class="stlbl">Total a cobrar</span>
+      <span class="stval" id="stot">—</span>
     </div>
-    <div class=3D"ivanote" id=3D"ivanote"></div>
+    <div class="ivanote" id="ivanote"></div>
   </div>
-
-  <div class=3D"dvd" style=3D"margin-top:4px">=E2=9A=A0=EF=B8=8F Incidencia=
-s</div>
-  <div class=3D"row2">
-    <div><label class=3D"lbl">Descripci=C3=B3n</label><input class=3D"inp" =
-id=3D"finc" placeholder=3D"Describe..."></div>
-    <div><label class=3D"lbl">Hora inc.</label><input type=3D"time" class=
-=3D"inp" id=3D"fhinc"></div>
+  <div class="dvd" style="margin-top:4px">⚠️ Incidencias</div>
+  <div class="row2">
+    <div><label class="lbl">Descripción</label><input class="inp" id="finc" placeholder="Describe..."></div>
+    <div><label class="lbl">Hora inc.</label><input type="time" class="inp" id="fhinc"></div>
   </div>
-  <div class=3D"row2">
-    <div><label class=3D"lbl">Info adicional / RIZ</label><input class=3D"i=
-np" id=3D"fadd" placeholder=3D"Ej: RIZ 2..."></div>
-    <div><label class=3D"lbl">Servicios adicionales</label>
-      <select class=3D"inp" id=3D"fadicionales"><option value=3D"No">No</op=
-tion><option value=3D"Si">S=C3=AD</option></select>
+  <div class="row2">
+    <div><label class="lbl">Info adicional / RIZ</label><input class="inp" id="fadd" placeholder="Ej: RIZ 2..."></div>
+    <div><label class="lbl">Servicios adicionales</label>
+      <select class="inp" id="fadicionales"><option value="No">No</option><option value="Si">Sí</option></select>
     </div>
   </div>
-
-  <button class=3D"btn" id=3D"btnreg">=F0=9F=93=A4 Registrar jornada</butto=
-n>
-  <div class=3D"ok" id=3D"okmsg">=E2=9C=85 =C2=A1Jornada registrada correct=
-amente!</div>
-  <div class=3D"err" id=3D"errmsg">=E2=9D=8C Error al registrar. Int=C3=A9n=
-talo de nuevo.</div>
+  <button class="btn" id="btnreg" onclick="registrar()">📤 Registrar jornada</button>
+  <div class="ok" id="okmsg">✅ ¡Jornada registrada correctamente!</div>
+  <div class="err" id="errmsg">❌ Error al registrar. Inténtalo de nuevo.</div>
 </div>
 </div>
-
-<!-- MIS HORAS -->
-<div id=3D"tab-mis" class=3D"sec">
-  <div id=3D"lpanel" class=3D"card">
-    <div class=3D"lkwrap">
-      <div class=3D"lkico">=F0=9F=94=90</div>
-      <div class=3D"lktit">Acceso privado</div>
-      <div class=3D"lksub">Introduce tu c=C3=B3digo y PIN para ver solo tus=
- horas y cobros.</div>
+<div id="tab-mis" class="sec">
+  <div id="lpanel" class="card">
+    <div class="lkwrap">
+      <div class="lkico">🔐</div>
+      <div class="lktit">Acceso privado</div>
+      <div class="lksub">Introduce tu código y PIN para ver solo tus horas y cobros.</div>
     </div>
-    <div class=3D"row1"><label class=3D"lbl">Tu c=C3=B3digo personal</label=
->
-      <select class=3D"inp" id=3D"lc"><option value=3D"">=E2=80=94 Seleccio=
-na tu c=C3=B3digo =E2=80=94</option><option value=3D"T001 GG">T001 GG =E2=
-=80=94 Gonzalo Gonzales (Aut.)</option><option value=3D"T002 RAG">T002 RAG =
-=E2=80=94 Ricardo Andres Gutierrez (Aut.)</option><option value=3D"T003 DGM=
-">T003 DGM =E2=80=94 David Garcia Molina</option><option value=3D"T004 ESJ"=
->T004 ESJ =E2=80=94 Edwin Serrano Jimenez (Aut.)</option><option value=3D"T=
-005 MAOP">T005 MAOP =E2=80=94 Miguel Angel Olivero Perez</option><option va=
-lue=3D"T006 DA">T006 DA =E2=80=94 Dauri Arias</option><option value=3D"T007=
- FPC">T007 FPC =E2=80=94 Fabio Ponce de Carvalho (Aut.)</option><option val=
-ue=3D"T008 GMC">T008 GMC =E2=80=94 Gilson Mota Camargo (Aut.)</option><opti=
-on value=3D"T009 JD">T009 JD =E2=80=94 Jes=C3=BAs Dias</option><option valu=
-e=3D"T010 JJPG">T010 JJPG =E2=80=94 Jhon Jairo Gil Pardo</option><option va=
-lue=3D"T011 JGP">T011 JGP =E2=80=94 Joan Grau Piquer (Aut.)</option><option=
- value=3D"T012 JARL">T012 JARL =E2=80=94 John Albeiro Rodriguez Leon</optio=
-n><option value=3D"T013 JAVS">T013 JAVS =E2=80=94 Jorge Andres Vasquez Sanc=
-hez</option><option value=3D"T014 JFDB">T014 JFDB =E2=80=94 Juan Federico D=
-uque Blanco</option><option value=3D"T015 JGMP">T015 JGMP =E2=80=94 Juan Ge=
-rardo Mazzarri P=C3=A9rez (Aut.)</option><option value=3D"T016 LCS">T016 LC=
-S =E2=80=94 Leandro Correa e Silva</option><option value=3D"T017 MVD">T017 =
-MVD =E2=80=94 Mario Vinicius Dugolni Izidoro</option><option value=3D"T018 =
-SO">T018 SO =E2=80=94 Sebastian Ocampo Ocampo</option><option value=3D"T019=
- RR">T019 RR =E2=80=94 Ricardo Rincon</option><option value=3D"T020 EA">T02=
-0 EA =E2=80=94 Emanuel Alvez</option><option value=3D"T021 RV">T021 RV =E2=
-=80=94 Richard (vic)</option><option value=3D"T022 FUT">T022 FUT =E2=80=94 =
-Frander Ulises Terreno</option><option value=3D"T023 AM">T023 AM =E2=80=94 =
-Angel Marquez</option><option value=3D"T024 CT">T024 CT =E2=80=94 Carolina =
-Tobar</option><option value=3D"T025 RB">T025 RB =E2=80=94 Ruben</option><op=
-tion value=3D"T026 MHM">T026 MHM =E2=80=94 Mohame (Aut.)</option><option va=
-lue=3D"T027 JM">T027 JM =E2=80=94 Jhon Mendieta</option><option value=3D"T0=
-28 RR">T028 RR =E2=80=94 Ricardo Ruiz</option><option value=3D"T029 JF">T02=
-9 JF =E2=80=94 Juliana Fernandez</option><option value=3D"T030 KJ">T030 KJ =
-=E2=80=94 Kelly Johana (Aut.)</option><option value=3D"T031 LC">T031 LC =E2=
-=80=94 Leandro Costa</option><option value=3D"T032 MI">T032 MI =E2=80=94 Mi=
-lton</option><option value=3D"T033 RB">T033 RB =E2=80=94 Ricardo Bento (Aut=
-.)</option><option value=3D"T034 RN">T034 RN =E2=80=94 Rony Nishijima</opti=
-on><option value=3D"T035 WR">T035 WR =E2=80=94 Wilfredo Rafael (Aut.)</opti=
-on><option value=3D"T036 JBP">T036 JBP =E2=80=94 Jaime Bladimir Pineda (Aut=
-.)</option><option value=3D"T037 SA">T037 SA =E2=80=94 Sergio Andres</optio=
-n><option value=3D"T038 FPP">T038 FPP =E2=80=94 Francisco Palma Palma</opti=
-on><option value=3D"T039 JZ">T039 JZ =E2=80=94 Jose Salazar</option><option=
- value=3D"T040 DM">T040 DM =E2=80=94 Diego Mario</option><option value=3D"T=
-041">T041 =E2=80=94 Ronald</option><option value=3D"T042 AH">T042 AH =E2=80=
-=94 Alexander Hernandez</option><option value=3D"T043 TOG">T043 TOG =E2=80=
-=94 Tatiana Osorio Guzman (Aut.)</option><option value=3D"T044 AJ">T044 AJ =
-=E2=80=94 Amir Jane (Aut.)</option><option value=3D"T045 JV">T045 JV =E2=80=
-=94 Javier Loaiza (Aut.)</option><option value=3D"T046 CO">T046 CO =E2=80=
-=94 CAIQUE ONDA</option><option value=3D"T047">T047 =E2=80=94 Mario Sanchez=
-</option><option value=3D"T048">T048 =E2=80=94 Cristian Camilo Melo</option=
-><option value=3D"T049">T049 =E2=80=94 Hernan Herrera</option><option value=
-=3D"T050">T050 =E2=80=94 Oswaldo (Aut.)</option><option value=3D"T051">T051=
- =E2=80=94 Sebastian Perez</option><option value=3D"T052">T052 =E2=80=94 Wi=
-lson</option><option value=3D"T053">T053 =E2=80=94 Michael</option><option =
-value=3D"T054">T054 =E2=80=94 Jhon Prieto</option><option value=3D"T055">T0=
-55 =E2=80=94 Cristian Fernandez</option><option value=3D"T056">T056 =E2=80=
-=94 Antonio (Aut.)</option></select>
+    <div class="row1"><label class="lbl">Tu código personal</label>
+      <select class="inp" id="lc"><option value="">— Selecciona tu código —</option></select>
     </div>
-    <div class=3D"row1" style=3D"margin-top:8px"><label class=3D"lbl">Tu PI=
-N (4 d=C3=ADgitos)</label>
-      <input type=3D"password" class=3D"inp" id=3D"lp" placeholder=3D"=E2=
-=80=A2=E2=80=A2=E2=80=A2=E2=80=A2" maxlength=3D"4" inputmode=3D"numeric" st=
-yle=3D"letter-spacing:.3em;font-size:18px;text-align:center">
+    <div class="row1" style="margin-top:8px"><label class="lbl">Tu PIN (4 dígitos)</label>
+      <input type="password" class="inp" id="lp" placeholder="••••" maxlength="4" inputmode="numeric" style="letter-spacing:.3em;font-size:18px;text-align:center">
     </div>
-    <button class=3D"btn" id=3D"btnlogin">=F0=9F=94=93 Ver mis horas</butto=
-n>
-    <div class=3D"err" id=3D"lerr" style=3D"margin-top:8px">=E2=9D=8C <span=
- id=3D"lerrtxt">PIN incorrecto.</span></div>
-    <div class=3D"info" style=3D"margin-top:8px">=F0=9F=9B=A1=EF=B8=8F Solo=
- ver=C3=A1s tus propios registros. Tu PIN es personal.</div>
+    <button class="btn" id="btnlogin" onclick="doLogin()">🔓 Ver mis horas</button>
+    <div class="err" id="lerr" style="margin-top:8px">❌ <span id="lerrtxt">PIN incorrecto.</span></div>
+    <div class="info" style="margin-top:8px">🛡️ Solo verás tus propios registros. Tu PIN es personal.</div>
   </div>
-
-  <div id=3D"dpanel" style=3D"display:none">
-    <div class=3D"wbar">
-      <div style=3D"display:flex;align-items:center;gap:8px">
-        <div class=3D"av" id=3D"dav">??</div>
-        <div><div class=3D"wn" id=3D"dn">=E2=80=94</div><div class=3D"wc" i=
-d=3D"dc">=E2=80=94</div></div>
+  <div id="dpanel" style="display:none">
+    <div class="wbar">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="av" id="dav">??</div>
+        <div><div class="wn" id="dn">—</div><div class="wc" id="dc">—</div></div>
       </div>
-      <button class=3D"outbtn">Salir</button>
+      <button class="outbtn" onclick="logout()">Salir</button>
     </div>
-    <div class=3D"sg">
-      <div class=3D"st"><div class=3D"sl">Total horas</div><div class=3D"sv=
- g" id=3D"st1">=E2=80=94</div></div>
-      <div class=3D"st"><div class=3D"sl">Jornadas</div><div class=3D"sv" i=
-d=3D"st2">=E2=80=94</div></div>
-      <div class=3D"st"><div class=3D"sl">Cobro aprox.</div><div class=3D"s=
-v a" id=3D"st3">=E2=80=94</div></div>
-      <div class=3D"st"><div class=3D"sl">Incidencias</div><div class=3D"sv=
- r" id=3D"st4">=E2=80=94</div></div>
+    <div class="sg">
+      <div class="st"><div class="sl">Total horas</div><div class="sv g" id="st1">—</div></div>
+      <div class="st"><div class="sl">Jornadas</div><div class="sv" id="st2">—</div></div>
+      <div class="st"><div class="sl">Cobro aprox.</div><div class="sv a" id="st3">—</div></div>
+      <div class="st"><div class="sl">Incidencias</div><div class="sv r" id="st4">—</div></div>
     </div>
-    <div class=3D"frow">
-      <select class=3D"inp" id=3D"fmes" style=3D"flex:1">
-        <option value=3D"">Todos los meses</option>
-        <option value=3D"1">Enero</option><option value=3D"2">Febrero</opti=
-on><option value=3D"3">Marzo</option>
-        <option value=3D"4">Abril</option><option value=3D"5">Mayo</option>=
-<option value=3D"6">Junio</option>
-        <option value=3D"7">Julio</option><option value=3D"8">Agosto</optio=
-n><option value=3D"9">Septiembre</option>
-        <option value=3D"10">Octubre</option><option value=3D"11">Noviembre=
-</option><option value=3D"12">Diciembre</option>
+    <div class="frow">
+      <select class="inp" id="fmes" onchange="filtrar()" style="flex:1">
+        <option value="">Todos los meses</option>
+        <option value="1">Enero</option><option value="2">Febrero</option><option value="3">Marzo</option>
+        <option value="4">Abril</option><option value="5">Mayo</option><option value="6">Junio</option>
+        <option value="7">Julio</option><option value="8">Agosto</option><option value="9">Septiembre</option>
+        <option value="10">Octubre</option><option value="11">Noviembre</option><option value="12">Diciembre</option>
       </select>
-      <select class=3D"inp" id=3D"fcli" style=3D"flex:1">
-        <option value=3D"">Todos los clientes</option>
-        <option>Refruiting</option><option>Nora</option><option>Meteor</opt=
-ion><option>Almacen</option>
-        <option>Domestic shop</option><option>Shargo</option><option>Marta<=
-/option><option>Delicat</option><option>Baluar</option>
+      <select class="inp" id="fcli" onchange="filtrar()" style="flex:1">
+        <option value="">Todos los clientes</option>
+        <option>Refruiting</option><option>Nora</option><option>Meteor</option><option>Almacen</option>
+        <option>Domestic shop</option><option>Shargo</option><option>Marta</option><option>Delicat</option><option>Baluar</option>
       </select>
     </div>
-    <div class=3D"tw">
-      <table><thead><tr><th>Fecha</th><th>Cliente</th><th>Horas</th><th>Fur=
-go</th><th>Cobro</th><th>Estado</th></tr></thead>
-      <tbody id=3D"tbody"></tbody></table>
+    <div class="tw">
+      <table><thead><tr><th>Fecha</th><th>Cliente</th><th>Horas</th><th>Furgo</th><th>Cobro</th><th>Estado</th></tr></thead>
+      <tbody id="tbody"></tbody></table>
     </div>
   </div>
 </div>
 </div>
-
-
-
-
-</body></html>
-------MultipartBoundary--BQCXHh5zm9EZLEv75aXFfUKQOb1411fVG0dHaTNW19----
-Content-Type: text/css
-Content-Transfer-Encoding: quoted-printable
-Content-Location: cid:css-7b950fc5-7c19-44a3-a55b-818f1f9247b3@mhtml.blink
-
-@charset "utf-8";
-
-* { box-sizing: border-box; margin: 0px; padding: 0px; }
-
-body { font-family: system-ui, sans-serif; background: rgb(13, 17, 23); col=
-or: rgb(230, 237, 243); padding: 12px; min-height: 100vh; }
-
-.wrap { max-width: 480px; margin: 0px auto; }
-
-.hdr { background: rgb(22, 27, 34); padding: 16px; border-radius: 12px; mar=
-gin-bottom: 12px; display: flex; align-items: center; justify-content: spac=
-e-between; border: 1px solid rgba(255, 255, 255, 0.08); }
-
-.logo { width: 38px; height: 38px; background: rgb(232, 69, 69); border-rad=
-ius: 8px; display: flex; align-items: center; justify-content: center; font=
--weight: 700; font-size: 17px; color: rgb(255, 255, 255); flex-shrink: 0; }
-
-.ht { color: rgb(255, 255, 255); font-size: 16px; font-weight: 600; margin-=
-left: 10px; }
-
-.hs { color: rgb(139, 148, 158); font-size: 11px; }
-
-.online { background: rgba(63, 185, 80, 0.15); color: rgb(63, 185, 80); bor=
-der: 1px solid rgba(63, 185, 80, 0.3); padding: 3px 10px; border-radius: 20=
-px; font-size: 11px; }
-
-.nav { display: flex; gap: 3px; background: rgb(22, 27, 34); padding: 4px; =
-border-radius: 10px; margin-bottom: 12px; border: 1px solid rgba(255, 255, =
-255, 0.08); }
-
-.nb { flex: 1 1 0%; padding: 8px; border-width: medium; border-style: none;=
- border-color: currentcolor; border-image: initial; background: transparent=
-; border-radius: 8px; cursor: pointer; font-size: 12px; color: rgb(139, 148=
-, 158); font-family: inherit; }
-
-.nb.on { background: rgb(33, 38, 45); color: rgb(230, 237, 243); border: 1p=
-x solid rgba(255, 255, 255, 0.12); font-weight: 500; }
-
-.sec { display: none; }
-
-.sec.on { display: block; }
-
-.card { background: rgb(22, 27, 34); border: 1px solid rgba(255, 255, 255, =
-0.08); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
-
-.dvd { font-size: 10px; font-weight: 500; color: rgb(139, 148, 158); text-t=
-ransform: uppercase; letter-spacing: 0.06em; padding: 6px 0px 5px; border-b=
-ottom: 1px solid rgba(255, 255, 255, 0.06); margin-bottom: 8px; }
-
-.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bot=
-tom: 8px; }
-
-.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin=
--bottom: 8px; }
-
-.row1 { margin-bottom: 8px; }
-
-.lbl { font-size: 10px; font-weight: 500; color: rgb(139, 148, 158); text-t=
-ransform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom:=
- 4px; }
-
-.inp { padding: 8px 10px; border-radius: 7px; border: 1px solid rgba(255, 2=
-55, 255, 0.12); background: rgb(33, 38, 45); color: rgb(230, 237, 243); fon=
-t-size: 13px; font-family: inherit; outline: none; width: 100%; }
-
-.inp:focus { border-color: rgb(232, 69, 69); }
-
-.inp:disabled { opacity: 0.5; }
-
-.hbox { background: rgba(232, 69, 69, 0.07); border: 1px solid rgba(232, 69=
-, 69, 0.2); border-radius: 8px; padding: 10px 14px; display: flex; align-it=
-ems: center; justify-content: space-between; margin: 8px 0px; }
-
-.hval { font-size: 24px; font-weight: 700; color: rgb(232, 69, 69); font-fa=
-mily: monospace; }
-
-.sbox { background: rgba(63, 185, 80, 0.07); border: 1px solid rgba(63, 185=
-, 80, 0.2); border-radius: 8px; padding: 12px 14px; margin: 8px 0px; displa=
-y: none; }
-
-.sbox.on { display: block; }
-
-.srow { display: flex; justify-content: space-between; padding: 4px 0px; bo=
-rder-bottom: 1px solid rgba(255, 255, 255, 0.04); font-size: 12px; }
-
-.srow:last-child { border-width: medium; border-style: none; border-color: =
-currentcolor; border-image: initial; }
-
-.slbl { color: rgb(139, 148, 158); }
-
-.sval { font-family: monospace; font-weight: 500; }
-
-.stot { display: flex; justify-content: space-between; margin-top: 8px; pad=
-ding-top: 8px; border-top: 1px solid rgba(63, 185, 80, 0.25); }
-
-.stlbl { font-size: 13px; font-weight: 600; }
-
-.stval { font-size: 22px; font-weight: 700; color: rgb(63, 185, 80); font-f=
-amily: monospace; }
-
-.ivanote { font-size: 10px; color: rgb(139, 148, 158); text-align: right; m=
-argin-top: 2px; }
-
-.mbox { background: rgba(88, 166, 255, 0.07); border: 1px solid rgba(88, 16=
-6, 255, 0.2); border-radius: 8px; padding: 10px 14px; margin: 8px 0px; disp=
-lay: none; align-items: center; justify-content: space-between; }
-
-.mbox.on { display: flex; }
-
-.btn { width: 100%; padding: 11px; background: rgb(232, 69, 69); color: rgb=
-(255, 255, 255); border-width: medium; border-style: none; border-color: cu=
-rrentcolor; border-image: initial; border-radius: 8px; font-size: 13px; fon=
-t-weight: 600; cursor: pointer; margin-top: 6px; font-family: inherit; }
-
-.btn:hover { background: rgb(204, 53, 53); }
-
-.btn:disabled { background: rgb(139, 148, 158); cursor: not-allowed; }
-
-.ok { background: rgba(63, 185, 80, 0.1); border: 1px solid rgba(63, 185, 8=
-0, 0.3); border-radius: 8px; padding: 10px; color: rgb(126, 231, 135); font=
--size: 13px; margin-top: 8px; display: none; }
-
-.ok.on { display: block; }
-
-.err { background: rgba(232, 69, 69, 0.08); border: 1px solid rgba(232, 69,=
- 69, 0.2); border-radius: 8px; padding: 10px; color: rgb(255, 128, 128); fo=
-nt-size: 13px; margin-top: 8px; display: none; }
-
-.err.on { display: block; }
-
-.lkwrap { text-align: center; padding: 8px 0px 14px; }
-
-.lkico { width: 52px; height: 52px; background: rgba(232, 69, 69, 0.12); bo=
-rder-radius: 50%; display: flex; align-items: center; justify-content: cent=
-er; margin: 0px auto 10px; font-size: 22px; }
-
-.lktit { font-size: 16px; font-weight: 600; margin-bottom: 3px; }
-
-.lksub { font-size: 12px; color: rgb(139, 148, 158); line-height: 1.4; }
-
-.wbar { background: rgb(33, 38, 45); border-radius: 8px; padding: 10px 12px=
-; display: flex; align-items: center; justify-content: space-between; margi=
-n-bottom: 10px; }
-
-.av { width: 34px; height: 34px; border-radius: 50%; background: rgba(232, =
-69, 69, 0.15); display: flex; align-items: center; justify-content: center;=
- font-size: 12px; font-weight: 600; color: rgb(232, 69, 69); flex-shrink: 0=
-; }
-
-.wn { font-size: 13px; font-weight: 500; }
-
-.wc { font-size: 10px; color: rgb(139, 148, 158); font-family: monospace; }
-
-.outbtn { padding: 5px 10px; border: 1px solid rgba(255, 255, 255, 0.12); b=
-ackground: transparent; border-radius: 7px; font-size: 11px; color: rgb(139=
-, 148, 158); cursor: pointer; font-family: inherit; }
-
-.sg { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-botto=
-m: 10px; }
-
-.st { background: rgb(33, 38, 45); border-radius: 7px; padding: 10px 12px; =
-}
-
-.sl { font-size: 9px; color: rgb(139, 148, 158); text-transform: uppercase;=
- letter-spacing: 0.05em; margin-bottom: 3px; }
-
-.sv { font-size: 18px; font-weight: 700; font-family: monospace; }
-
-.sv.g { color: rgb(63, 185, 80); }
-
-.sv.r { color: rgb(232, 69, 69); }
-
-.sv.a { color: rgb(210, 153, 34); }
-
-.frow { display: flex; gap: 8px; margin-bottom: 10px; }
-
-.tw { border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 9px; over=
-flow: auto hidden; }
-
-table { width: 100%; border-collapse: collapse; font-size: 12px; min-width:=
- 420px; }
-
-thead th { padding: 8px 10px; text-align: left; background: rgb(33, 38, 45)=
-; color: rgb(139, 148, 158); font-size: 10px; text-transform: uppercase; le=
-tter-spacing: 0.04em; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
-
-tbody td { padding: 9px 10px; border-bottom: 1px solid rgba(255, 255, 255, =
-0.06); color: rgb(230, 237, 243); }
-
-tbody tr:last-child td { border-width: medium; border-style: none; border-c=
-olor: currentcolor; border-image: initial; }
-
-tbody tr:hover { background: rgb(33, 38, 45); }
-
-.pill { display: inline-flex; align-items: center; padding: 2px 6px; border=
--radius: 8px; font-size: 10px; font-weight: 500; }
-
-.pg { background: rgba(63, 185, 80, 0.12); color: rgb(126, 231, 135); }
-
-.pa { background: rgba(210, 153, 34, 0.12); color: rgb(227, 179, 65); }
-
-.pr { background: rgba(232, 69, 69, 0.12); color: rgb(255, 128, 128); }
-
-.pb { background: rgba(88, 166, 255, 0.12); color: rgb(88, 166, 255); }
-
-.info { background: rgba(88, 166, 255, 0.08); border: 1px solid rgba(88, 16=
-6, 255, 0.2); border-radius: 7px; padding: 9px 12px; font-size: 12px; color=
-: rgb(88, 166, 255); margin-top: 8px; }
-------MultipartBoundary--BQCXHh5zm9EZLEv75aXFfUKQOb1411fVG0dHaTNW19------
+<script>
+const URL_S="https://script.google.com/macros/s/AKfycbxrWnoL4Z9w93OXZ2se4IyVD_n8NJJ8Jm1Ekm0qABKqvIpZ5jSFUFAOnXXTb_QxLPr_/exec";
+const AUT=["T001 GG","T002 RAG","T004 ESJ","T007 FPC","T008 GMC","T011 JGP","T015 JGMP","T026 MHM","T030 KJ","T033 RB","T035 WR","T036 JBP","T043 TOG","T044 AJ","T045 JV","T050","T056"];
+const WK=[
+{c:"T001 GG",n:"Gonzalo Gonzales"},{c:"T002 RAG",n:"Ricardo Andres Gutierrez"},
+{c:"T003 DGM",n:"David Garcia Molina"},{c:"T004 ESJ",n:"Edwin Serrano Jimenez"},
+{c:"T005 MAOP",n:"Miguel Angel Olivero Perez"},{c:"T006 DA",n:"Dauri Arias"},
+{c:"T007 FPC",n:"Fabio Ponce de Carvalho"},{c:"T008 GMC",n:"Gilson Mota Camargo"},
+{c:"T009 JD",n:"Jesús Dias"},{c:"T010 JJPG",n:"Jhon Jairo Gil Pardo"},
+{c:"T011 JGP",n:"Joan Grau Piquer"},{c:"T012 JARL",n:"John Albeiro Rodriguez Leon"},
+{c:"T013 JAVS",n:"Jorge Andres Vasquez Sanchez"},{c:"T014 JFDB",n:"Juan Federico Duque Blanco"},
+{c:"T015 JGMP",n:"Juan Gerardo Mazzarri Pérez"},{c:"T016 LCS",n:"Leandro Correa e Silva"},
+{c:"T017 MVD",n:"Mario Vinicius Dugolni Izidoro"},{c:"T018 SO",n:"Sebastian Ocampo Ocampo"},
+{c:"T019 RR",n:"Ricardo Rincon"},{c:"T020 EA",n:"Emanuel Alvez"},
+{c:"T021 RV",n:"Richard (vic)"},{c:"T022 FUT",n:"Frander Ulises Terreno"},
+{c:"T023 AM",n:"Angel Marquez"},{c:"T024 CT",n:"Carolina Tobar"},
+{c:"T025 RB",n:"Ruben"},{c:"T026 MHM",n:"Mohame"},
+{c:"T027 JM",n:"Jhon Mendieta"},{c:"T028 RR",n:"Ricardo Ruiz"},
+{c:"T029 JF",n:"Juliana Fernandez"},{c:"T030 KJ",n:"Kelly Johana"},
+{c:"T031 LC",n:"Leandro Costa"},{c:"T032 MI",n:"Milton"},
+{c:"T033 RB",n:"Ricardo Bento"},{c:"T034 RN",n:"Rony Nishijima"},
+{c:"T035 WR",n:"Wilfredo Rafael"},{c:"T036 JBP",n:"Jaime Bladimir Pineda"},
+{c:"T037 SA",n:"Sergio Andres"},{c:"T038 FPP",n:"Francisco Palma Palma"},
+{c:"T039 JZ",n:"Jose Salazar"},{c:"T040 DM",n:"Diego Mario"},
+{c:"T041",n:"Ronald"},{c:"T042 AH",n:"Alexander Hernandez"},
+{c:"T043 TOG",n:"Tatiana Osorio Guzman"},{c:"T044 AJ",n:"Amir Jane"},
+{c:"T045 JV",n:"Javier Loaiza"},{c:"T046 CO",n:"CAIQUE ONDA"},
+{c:"T047",n:"Mario Sanchez"},{c:"T048",n:"Cristian Camilo Melo"},
+{c:"T049",n:"Hernan Herrera"},{c:"T050",n:"Oswaldo"},
+{c:"T051",n:"Sebastian Perez"},{c:"T052",n:"Wilson"},
+{c:"T053",n:"Michael"},{c:"T054",n:"Jhon Prieto"},
+{c:"T055",n:"Cristian Fernandez"},{c:"T056",n:"Antonio"},
+];
+function gp(c,n){let h=0,s=c+n+"ZRD26";for(let i=0;i<s.length;i++)h=((h<<5)-h+s.charCodeAt(i))|0;return String(Math.abs(h)%9000+1000);}
+WK.forEach(w=>{w.pin=gp(w.c,w.n);w.aut=AUT.includes(w.c);});
+[document.getElementById('fc'),document.getElementById('lc')].forEach(s=>{WK.forEach(w=>{const o=document.createElement('option');o.value=w.c;o.textContent=w.c+' — '+w.n+(w.aut?' (Aut.)':'');s.appendChild(o);});});
+document.getElementById('ffecha').value=new Date().toISOString().split('T')[0];
+function fillW(){const w=WK.find(x=>x.c===document.getElementById('fc').value);document.getElementById('fn').value=w?w.n:'';document.getElementById('ftipo').value=w?(w.aut?'✓ Autónomo':'No autónomo'):'';if(document.getElementById('fcliente').value==='Baluar'){document.getElementById('ffurgo').value='zardini';}calcS();}
+function onCliente(){const cl=document.getElementById('fcliente').value;const mb=document.getElementById('mbox'),hs=document.getElementById('hsec'),ff=document.getElementById('ffurgo');if(cl==='Meteor'){mb.classList.add('on');hs.style.display='none';}else{mb.classList.remove('on');hs.style.display='block';}if(cl==='Baluar'){ff.value='zardini';ff.disabled=true;}else{ff.disabled=false;}if(cl!=='Refruiting')document.getElementById('fserv').value='normal';calcS();}
+function getH(){const a=document.getElementById('finicio').value,b=document.getElementById('ffin').value;if(!a||!b)return 0;const[ah,am]=a.split(':').map(Number),[bh,bm]=b.split(':').map(Number);const m=(bh*60+bm)-(ah*60+am);return m>0?m/60:0;}
+function onH(){const h=getH();const hh=Math.floor(h),mm=Math.round((h-hh)*60);document.getElementById('htot').textContent=h>0?hh+'h'+(mm>0?' '+mm+'m':''):'—';calcS();}
+function calcS(){const code=document.getElementById('fc').value,cl=document.getElementById('fcliente').value,furgo=document.getElementById('ffurgo').value,serv=document.getElementById('fserv').value;const w=WK.find(x=>x.c===code),sb=document.getElementById('sbox');if(!code||!cl||!furgo||!w){sb.classList.remove('on');return;}let base=0,total=0,det='',iva=false,h=getH();if(cl==='Meteor'){total=120;det='<div class="srow"><span class="slbl">Jornada Meteor</span><span class="sval">120,00 €</span></div>';iva=w.aut;}else if(cl==='Baluar'){base=10;if(!h){sb.classList.remove('on');return;}total=h*base;det='<div class="srow"><span class="slbl">Baluar: '+h.toFixed(2)+'h × 10€</span><span class="sval">'+total.toFixed(2)+' €</span></div>';iva=w.aut;}else if(serv==='montaje_festivo'){if(!h){sb.classList.remove('on');return;}if(h<=8){total=60;det='<div class="srow"><span class="slbl">Montaje festivo (hasta 8h)</span><span class="sval">60,00 €</span></div>';}else{const ex=h-8;total=60+ex*10;det='<div class="srow"><span class="slbl">Primeras 8h</span><span class="sval">60,00 €</span></div><div class="srow"><span class="slbl">'+ex.toFixed(1)+'h extra × 10€</span><span class="sval">'+(ex*10).toFixed(2)+' €</span></div>';}iva=w.aut;}else{base=furgo==='propia'?(w.aut?12.50:12):(w.aut?9:8);if(!h){sb.classList.remove('on');return;}total=h*base;const tl=serv==='montaje_comun'?'Montaje común':'Jornada normal';det='<div class="srow"><span class="slbl">'+tl+': '+h.toFixed(2)+'h × '+base+'€</span><span class="sval">'+total.toFixed(2)+' €</span></div><div class="srow"><span class="slbl">Furgo '+(furgo==='propia'?'propia':'Zardini')+' · '+(w.aut?'Autónomo':'No autónomo')+'</span><span class="sval">'+base+' €/h</span></div>';iva=w.aut;}const tc=iva?total*1.21:total;sb.classList.add('on');document.getElementById('sdet').innerHTML=det;document.getElementById('stot').textContent=tc.toFixed(2)+' €';document.getElementById('ivanote').textContent=iva?'* Incluye IVA 21% ('+(total*0.21).toFixed(2)+' €). Base: '+total.toFixed(2)+' €':'';}
+function goT(id,btn){document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));document.getElementById('tab-'+id).classList.add('on');btn.classList.add('on');}
+function registrar(){const code=document.getElementById('fc').value,cl=document.getElementById('fcliente').value,fecha=document.getElementById('ffecha').value,furgo=document.getElementById('ffurgo').value;if(!code||!cl||!fecha||!furgo){alert('Completa: código, cliente, fecha y tipo de furgoneta.');return;}const meteor=cl==='Meteor',ini=document.getElementById('finicio').value,fin=document.getElementById('ffin').value;if(!meteor&&(!ini||!fin)){alert('Completa hora de inicio y fin.');return;}const btn=document.getElementById('btnreg');btn.disabled=true;btn.textContent='⏳ Enviando...';document.getElementById('okmsg').classList.remove('on');document.getElementById('errmsg').classList.remove('on');const w=WK.find(x=>x.c===code);const payload={codigo:code,email:'',cliente:cl,ruta:document.getElementById('fruta').value,vehiculo:document.getElementById('fveh').value,fecha,inicio:meteor?'—':ini,fin:meteor?'—':fin,totalHoras:meteor?'Jornada':document.getElementById('htot').textContent,totalDec:meteor?'jornada':getH().toFixed(2),incidencia:document.getElementById('finc').value,horaInc:document.getElementById('fhinc').value,adicional:document.getElementById('fadd').value,paquetes:document.getElementById('fpaq').value,serviciosAdicionales:document.getElementById('fadicionales').value,tipoFurgo:furgo,tipoServicio:document.getElementById('fserv').value,esAutonomo:w?(w.aut?'Si':'No'):'No',cobroEstimado:document.getElementById('stot').textContent};fetch(URL_S,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).then(()=>{btn.disabled=false;btn.textContent='📤 Registrar jornada';document.getElementById('okmsg').classList.add('on');setTimeout(()=>document.getElementById('okmsg').classList.remove('on'),5000);}).catch(()=>{btn.disabled=false;btn.textContent='📤 Registrar jornada';document.getElementById('errmsg').classList.add('on');});}
+let rows=[],curCode='';
+function doLogin(){const code=document.getElementById('lc').value,pin=document.getElementById('lp').value;const er=document.getElementById('lerr');er.classList.remove('on');if(!code||!pin){document.getElementById('lerrtxt').textContent='Selecciona tu código e introduce el PIN.';er.classList.add('on');return;}const w=WK.find(x=>x.c===code);if(!w||w.pin!==pin){document.getElementById('lerrtxt').textContent='PIN incorrecto.';er.classList.add('on');return;}const btn=document.getElementById('btnlogin');btn.disabled=true;btn.textContent='⏳ Cargando...';fetch(URL_S+'?code='+encodeURIComponent(code)+'&pin='+encodeURIComponent(pin)).then(r=>r.json()).then(d=>{btn.disabled=false;btn.textContent='🔓 Ver mis horas';if(d.error){document.getElementById('lerrtxt').textContent='Error del servidor.';er.classList.add('on');return;}rows=d.rows||[];curCode=code;loginOk(code);}).catch(()=>{btn.disabled=false;btn.textContent='🔓 Ver mis horas';document.getElementById('lerrtxt').textContent='No se pudo conectar.';er.classList.add('on');});}
+function loginOk(code){const w=WK.find(x=>x.c===code);const ini=w?w.n.split(' ').slice(0,2).map(n=>n[0]).join('').toUpperCase():code.slice(0,2);document.getElementById('dav').textContent=ini;document.getElementById('dn').textContent=w?w.n:code;document.getElementById('dc').textContent=code+' · '+(w&&w.aut?'Autónomo':'No autónomo');document.getElementById('lpanel').style.display='none';document.getElementById('dpanel').style.display='block';filtrar();}
+function logout(){rows=[];curCode='';document.getElementById('lpanel').style.display='block';document.getElementById('dpanel').style.display='none';document.getElementById('lp').value='';document.getElementById('lc').value='';}
+function filtrar(){const mes=document.getElementById('fmes').value,cl=document.getElementById('fcli').value;let r=rows;if(cl)r=r.filter(x=>x.cliente&&x.cliente.toLowerCase().includes(cl.toLowerCase()));if(mes)r=r.filter(x=>{if(!x.fecha)return false;const p=String(x.fecha).split('/');return p.length>=2&&String(parseInt(p[1]))===mes;});renderT(r);}
+function calcCobro(r,w){const h=parseFloat(String(r.horas||'0').replace(',','.'));if(!h||h<=0)return 0;if(r.cliente==='Meteor')return w&&w.aut?120*1.21:120;const furgo=String(r.vehiculo||'').toLowerCase().includes('propia')||String(r.ruta||'').toLowerCase().includes('propia')?'propia':'zardini';let base=r.cliente==='Baluar'?10:furgo==='propia'?(w&&w.aut?12.50:12):(w&&w.aut?9:8);return w&&w.aut?h*base*1.21:h*base;}
+function renderT(r){const w=WK.find(x=>x.c===curCode);const tot=r.reduce((a,x)=>a+parseFloat(String(x.horas||'0').replace(',','.')),0);const inc=r.filter(x=>x.incidencia&&String(x.incidencia).trim()).length;const cobro=r.reduce((a,x)=>a+calcCobro(x,w),0);document.getElementById('st1').textContent=isNaN(tot)?'—':tot.toFixed(1)+' h';document.getElementById('st2').textContent=r.length;document.getElementById('st3').textContent=cobro>0?cobro.toFixed(0)+' €':'—';document.getElementById('st4').textContent=inc;if(!r.length){document.getElementById('tbody').innerHTML='<tr><td colspan="6" style="text-align:center;padding:18px;color:#8b949e">Sin registros</td></tr>';return;}document.getElementById('tbody').innerHTML=r.map(x=>{const h=parseFloat(String(x.horas||'0').replace(',','.'));const badge=h>=10?'<span class="pill pr">Extra</span>':h>=8?'<span class="pill pa">Completa</span>':h>=6?'<span class="pill pg">Normal</span>':'<span class="pill pb">Parcial</span>';const fs=String(x.fecha||'—');const hs=String(x.horas||'—').replace(',','.');const furgo=String(x.vehiculo||'').toLowerCase().includes('propia')||String(x.ruta||'').toLowerCase().includes('propia')?'🚐P':'🚐Z';const cb=calcCobro(x,w);return '<tr><td>'+fs+'</td><td>'+(x.cliente||'—')+'</td><td style="font-family:monospace;font-weight:600">'+hs+' h</td><td>'+furgo+'</td><td style="font-family:monospace;color:#d29922">'+(cb>0?cb.toFixed(2)+' €':'—')+'</td><td>'+badge+'</td></tr>';}).join('');}
+document.getElementById('lp').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+</script>
+</body>
+</html>
